@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stress Monitor</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00ffd5;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .label {
+            opacity: 0.7;
+        }
+
+        .value {
+            font-size: 2rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .gsr { color: #00ffd5; }
+        .temp { color: #ffcc00; }
+        .hr { color: #ff4d6d; }
+
+        .stress-extreme { color: #ff0000; }
+        .stress-high { color: #ff4d4d; }
+        .stress-medium { color: #ffaa00; }
+        .stress-low { color: #00ffcc; }
+        .stress-no { color: #00ff88; }
+
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .chart-title {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        iframe {
+            width: 100%;
+            height: 260px;
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Stress Monitoring System</h1>
+
+<!-- TOP CARDS -->
+<div class="cards">
+
+    <div class="card">
+        <div class="label">GSR</div>
+        <div class="value gsr" id="gsr">{{ data.gsr }}</div>
+    </div>
+
+    <div class="card">
+        <div class="label">Temperature</div>
+        <div class="value temp" id="temp">{{ data.temp }}°C</div>
+    </div>
+
+    <div class="card">
+        <div class="label">Heart Rate</div>
+        <div class="value hr" id="hr">{{ data.hr }} BPM</div>
+    </div>
+
+    <div class="card">
+        <div class="label">Stress Level</div>
+        <div class="value" id="stress">{{ data.stress }}</div>
+    </div>
+
+</div>
+
+<!-- CHARTS -->
+<div class="charts">
+
+    <div class="chart-box">
+        <div class="chart-title">Heart Rate Chart</div>
+        <iframe src="https://thingspeak.com/channels/3330348/charts/1?dynamic=true&results=60"></iframe>
+    </div>
+
+    <div class="chart-box">
+        <div class="chart-title">GSR Chart</div>
+        <iframe src="https://thingspeak.com/channels/3330348/charts/2?dynamic=true&results=60"></iframe>
+    </div>
+
+    <div class="chart-box">
+        <div class="chart-title">Temperature Chart</div>
+        <iframe src="https://thingspeak.com/channels/3330348/charts/3?dynamic=true&results=60"></iframe>
+    </div>
+
+</div>
+
+<!-- 🔥 LIVE UPDATE SCRIPT -->
+<script>
+function updateStressColor(value) {
+    const el = document.getElementById("stress");
+    el.className = "value"; // reset
+
+    if (value === "Extreme") el.classList.add("stress-extreme");
+    else if (value === "High") el.classList.add("stress-high");
+    else if (value === "Medium") el.classList.add("stress-medium");
+    else if (value === "Low") el.classList.add("stress-low");
+    else el.classList.add("stress-no");
+}
+
+setInterval(() => {
+    fetch('/data')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("gsr").innerText = data.gsr;
+        document.getElementById("temp").innerText = data.temp + "°C";
+        document.getElementById("hr").innerText = data.hr + " BPM";
+        document.getElementById("stress").innerText = data.stress;
+
+        updateStressColor(data.stress);
+    });
+}, 2000);
+</script>
+
+</body>
+</html>
