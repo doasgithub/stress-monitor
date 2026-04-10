@@ -138,17 +138,26 @@
 
 </div>
 
+<div class="card">
+    <div class="label">ML Prediction</div>
+    <div class="value" id="ml_stress">Predicting...</div>
+</div>
+
 <!-- 🔥 LIVE UPDATE SCRIPT -->
 <script>
-function updateStressColor(value) {
-    const el = document.getElementById("stress");
-    el.className = "value"; // reset
+function typeEffect(element, text, speed = 60) {
+    element.innerHTML = "";
+    let i = 0;
 
-    if (value === "Extreme") el.classList.add("stress-extreme");
-    else if (value === "High") el.classList.add("stress-high");
-    else if (value === "Medium") el.classList.add("stress-medium");
-    else if (value === "Low") el.classList.add("stress-low");
-    else el.classList.add("stress-no");
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+
+    typing();
 }
 
 setInterval(() => {
@@ -160,7 +169,13 @@ setInterval(() => {
         document.getElementById("hr").innerText = data.hr + " BPM";
         document.getElementById("stress").innerText = data.stress;
 
-        updateStressColor(data.stress);
+        const mlEl = document.getElementById("ml_stress");
+
+        mlEl.innerText = "Predicting...";
+
+        setTimeout(() => {
+            typeEffect(mlEl, data.ml_stress, 70);
+        }, 500);
     });
 }, 2000);
 </script>

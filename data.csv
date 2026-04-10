@@ -1,0 +1,65 @@
+gsr,hr,temp,stress
+1,70,36.5,No Stress
+1,75,36.6,No Stress
+2,80,36.7,Low
+2,85,36.8,Low
+2,90,36.9,Low
+3,95,37.0,Medium
+3,100,37.1,Medium
+3,105,37.2,Medium
+3,110,37.3,High
+4,115,37.4,High
+4,120,37.5,High
+4,125,37.6,Extreme
+4,130,37.7,Extreme
+2,78,36.4,Low
+1,72,36.5,No Stress
+3,102,37.2,Medium
+4,128,38.0,Extreme
+2,88,36.9,Low
+3,108,37.3,High
+1,68,36.3,No Stress
+2,82,36.8,Low
+3,97,37.0,Medium
+4,122,37.6,High
+4,135,38.2,Extreme
+2,85,36.7,Low
+3,101,37.1,Medium
+4,140,38.5,Extreme
+1,65,36.4,No Stress
+2,87,36.8,Low
+3,99,37.0,Medium
+4,118,37.5,High
+4,132,38.3,Extreme
+1,74,36.6,No Stress
+2,83,36.7,Low
+3,106,37.2,High
+4,129,38.1,Extreme
+2,89,36.9,Low
+3,98,37.1,Medium
+4,121,37.5,High
+4,138,38.4,Extreme
+1,69,36.5,No Stress
+2,81,36.8,Low
+3,104,37.2,High
+4,126,38.0,Extreme
+2,86,36.9,Low
+3,103,37.1,Medium
+4,124,37.6,High
+4,136,38.3,Extreme
+1,71,36.5,No Stress
+2,84,36.7,Low
+3,107,37.2,High
+4,131,38.2,Extreme
+2,90,36.9,Low
+3,100,37.0,Medium
+4,123,37.5,High
+4,139,38.4,Extreme
+1,73,36.6,No Stress
+2,82,36.8,Low
+3,105,37.3,High
+4,127,38.1,Extreme
+2,88,36.9,Low
+3,96,37.0,Medium
+4,119,37.5,High
+4,134,38.3,Extreme

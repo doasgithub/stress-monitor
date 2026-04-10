@@ -1,16 +1,20 @@
 from flask import Flask, render_template, jsonify
+import joblib
 
 app = Flask(__name__)
 
-# Global storage
+# Load ML model
+model = joblib.load("model.pkl")
+
 sensor_data = {
     "gsr": 0,
     "temp": 0,
     "hr": 0,
-    "stress": "No Stress"
+    "stress": "No Stress",
+    "ml_stress": "Unknown"
 }
 
-# --- Stress Logic ---
+# Rule-based logic
 def determine_stress(bpm, gsr, temp):
     score = 0
     
@@ -29,28 +33,28 @@ def determine_stress(bpm, gsr, temp):
     if score >= 2: return "Low"
     return "No Stress"
 
-# Homepage
+# ML prediction
+def predict_ml(gsr, hr, temp):
+    return model.predict([[gsr, hr, temp]])[0]
+
 @app.route('/')
 def home():
     return render_template('index.html', data=sensor_data)
 
-# ESP32 update route
 @app.route('/update/gsr/<int:gsr>/temp/<float:temp>/hr/<int:hr>')
 def update(gsr, temp, hr):
     sensor_data["gsr"] = gsr
     sensor_data["temp"] = temp
     sensor_data["hr"] = hr
 
-    # Calculate stress
     sensor_data["stress"] = determine_stress(hr, gsr, temp)
+    sensor_data["ml_stress"] = predict_ml(gsr, hr, temp)
 
-    return "Data received successfully!"
+    return "OK"
 
-# 🔥 NEW: API for live updates
 @app.route('/data')
 def get_data():
     return jsonify(sensor_data)
 
-# Run server
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
